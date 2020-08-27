@@ -26,3 +26,7 @@ Route::get('/sample', function () {
 });
 
 Route::get('/todo', 'TodoController@index');
+
+Route::get('sales', 'SaleController@index');
+Route::get('ajax/sales', 'Ajax\SaleController@index');
+Route::get('ajax/sales/years', 'Ajax\SaleController@years');
