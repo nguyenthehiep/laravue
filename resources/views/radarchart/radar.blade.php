@@ -18,9 +18,16 @@
                     </select>
                 </div>
 
+				<div class="form-group">
+                    <label>会社一覧</label>
+                    <ul>
+                    	<li v-for="company in companies">@{{ company }}</li>
+                    </ul>
+                </div>
             </div>
         </div>
     </div>
+
     <script src="https://cdn.jsdelivr.net/npm/vue@2.6.11"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/lodash@4.17.15/lodash.min.js"></script>
@@ -32,26 +39,35 @@
                 sales: [],
                 year: '{{ date('Y') }}',
                 years: [],
-                chart: null
+                chart: null,
+                companies : null
             },
-            methods: {
-                getYears() { // yearsを取得
+            created: function(){
+            	console.log('created')
+                },
 
+            methods: {
+            	getCompanies() { // 会社を取得
+                    fetch('/ajax/sales/companies')
+                        .then(response => response.json())
+                        .then(data => {
+                            this.companies = data
+                            console.log(data);
+                        });
+                },
+
+                getYears() { // yearsを取得
                     fetch('/ajax/sales/years')
                         .then(response => response.json())
                         .then(data => this.years = data);
-
                 },
-                getSales() { // salesを取得
 
+                getSales() { // salesを取得
                     fetch('/ajax/sales?year='+ this.year)
                         .then(response => response.json())
                         .then(data => {
-
                             if(this.chart) { // チャートが存在していれば初期化
-
                                 this.chart.destroy();
-
                             }
 
                             const groupedSales = _.groupBy(data, 'company'); // 会社ごとにグループ化
@@ -109,10 +125,9 @@
                 }
             },
             mounted() {
-
+            	this.getCompanies();
                 this.getYears();
                 this.getSales();
-
             }
         });
 

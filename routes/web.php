@@ -30,3 +30,8 @@ Route::get('/todo', 'TodoController@index');
 Route::get('sales', 'SaleController@index');
 Route::get('ajax/sales', 'Ajax\SaleController@index');
 Route::get('ajax/sales/years', 'Ajax\SaleController@years');
+
+Route::get('radar', 'ChartController@index');
+Route::get('ajax/sales', 'Ajax\ChartAjaxController@index');
+Route::get('ajax/sales/years', 'Ajax\ChartAjaxController@years');
+Route::get('ajax/sales/companies', 'Ajax\ChartAjaxController@companies');
